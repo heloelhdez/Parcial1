@@ -12,8 +12,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 //cd /cygdrive/c/Users/heloe/Documents/NetBeansProjects/Parcial1/src/   
 public class Parcial1 {
 
@@ -27,9 +29,10 @@ public class Parcial1 {
     static String[][] inicialS;
     static String[][] tableroObjetivoS;
     static int filaCero;
-    static Tablero[] open;
-    static Tablero[] close;
-    static Tablero[] tableroInicial;
+    static ArrayList<Tablero> listaOpen = new ArrayList<>();
+    static ArrayList<Tablero> listaClose = new ArrayList<>();
+    
+    static Tablero tableroInicial;
     static int columnaCero;
     
     static int iteracion=0, posVacioX, posVacioY;
@@ -83,11 +86,77 @@ public class Parcial1 {
         }
            inicial = parseaMatriz(inicialS);
            tableroObjetivo = parseaMatriz(tableroObjetivoS);
-           tableroInicial = new Tablero(inicial, )
-        //imprimeMatriz(inicial);
-        //imprimeMatriz(tableroObjetivo);
-           System.out.println(filaCero);
-           System.out.println(columnaCero);
+           tableroInicial = new Tablero(inicial, 0,0,columnaCero, filaCero);
+           tableroInicial.setPeso(0.9);
+           listaOpen.add(tableroInicial);
+           //imprimeMatriz(listaOpen.get(0).getMatriz());
+           Tablero t2 = tableroInicial;
+           t2.setPeso(0.5);
+           listaOpen.add(t2);
+           t2.setPeso(0.3);
+           listaOpen.add(t2);
+           for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
+               Tablero next = iterator.next();
+               System.out.println(next.getPeso());
+               
+           }
+           System.out.println("Desordenada");
+           Collections.sort(listaOpen,  new Comparator<Tablero>() {
+            @Override
+            public int compare(Tablero o1, Tablero o2) {
+                if (o1.getPeso()-o2.getPeso()<0) {
+                    return -1;
+                }
+                if (o1.getPeso()-o2.getPeso()>0) {
+                    return 1;
+                }
+                if (o1.getPeso()-o2.getPeso()==0) {
+                    return 0;
+                }
+                return 0;
+            }
+        });
+           
+           for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
+               Tablero next = iterator.next();
+               System.out.println(next.getPeso());
+               
+           }
+           //open.append (tableroInicial)
+           //open.order()
+            /*
+            Tablero x;
+            while(!listaOpen.isEmpty()){
+                try{
+                    x = listaOpen.get(listaOpen.size()-1);
+                    if (sonIguales(x.getMatriz(), tableroObjetivo)) {
+                        //pathToX(x)
+                    }
+                    else{
+                            //generaHijoDerecha(x);
+                            //generaHijoIzquierda(x)
+                            //generaHijoArriba(x)
+                            //generaHijoAbajo(x)
+                            listaClose.add(x);
+                            Collections.sort(listaOpen, Collections.reverseOrder());
+                            //listaOpen.sort(cmprtr);
+                    }
+                }
+                catch(Exception e){
+                    e.getStackTrace();
+                }
+            
+            }
+           
+            */            
+
+
+           //Hay que ordenar de mayor a menor de acuerdo a su peso, del objeto!!!!!!!!
+           
+           //imprimeMatriz(inicial);
+           //imprimeMatriz(tableroObjetivo);
+           //System.out.println(filaCero);
+           //System.out.println(columnaCero);
                          
     // Null was received, so loop was aborted.
 
@@ -121,23 +190,25 @@ public class Parcial1 {
         tablero[posYfinal][posXfinal] = tmp;
         return tablero;
     }
-    
+    /*
     public static void generaHijoDerecha(Tablero papa){
 	try {
                 Tablero hijo = papa;
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()+1,papa.getPosYVacio());
                 papa.setMatriz(hijoMatriz);
                 papa.setDistanciaRaiz(papa.getDistanciaRaiz()+1);
+                papa.setPosXVacio(posVacioX+1);
+                papa.setPosYVacio(posVacioX);
                 
 		if (indexOpen(hijo)>=0){
-                    
-			if (revisarPesoActualVsPesoenOpen(hijo, papa,distaARaiz)){
+                    //Aqui vamos
+			if (revisarPesoActualVsPesoenOpen(hijo, papa)){
                             open[indexOpen(hijo)].setPeso();
                             cambiarPesoenOpen
                                         }
                 }
 		else if (estaClose(hijo))
-			if (revisarPesoActualVsPesoenOpen(hijo,papa, distaARaiz))
+			if (revisarPesoActualVsPesoenOpen(hijo,papa))
 				removeClose(hjo)
 				open.append(hijo)
             else	
@@ -148,13 +219,14 @@ public class Parcial1 {
                     exception por salir del arreglo, continue
             }
         }
+    */
     //Recuerda que no se van a eliminar sino que el objeto tendra un tributo que va a decir si esta eliminado
  public static double calculaPeso(Tablero tablero){
 	//Hay que dividir entre el maximo de cada uno para que quede de 0-1
 	double peso = 0;
-	peso+= calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales;
+	peso += calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales;
 	peso += pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes;
-	peso+= tablero.getDistanciaRaiz()/maxDistanciaRaiz;
+	peso += tablero.getDistanciaRaiz()/maxDistanciaRaiz;
 	return peso;
 }
 
@@ -179,8 +251,8 @@ public static int pasosFaltantes(int[][] matriz){
 public static int indexOpen(Tablero tablero){
     int bandera = -1;
     
-    for (int i = 0; i < open.length; i++) {
-        if (calculaIguales(tablero.getMatriz(), open[i].getMatriz()) == (tamano*tamano) && open[i].getNoEliminado()){
+    for (int i = 0; i < listaOpen.size(); i++) {
+        if (calculaIguales(tablero.getMatriz(), listaOpen.get(i).getMatriz()) == (tamano*tamano) && listaOpen.get(i).isNoEliminado()){
             bandera = i;
             return bandera;
         }
@@ -190,8 +262,8 @@ public static int indexOpen(Tablero tablero){
 public static int indexClose(Tablero tablero){
     int bandera = -1;
 
-    for (int i = 0; i < close.length; i++) {
-        if (calculaIguales(tablero.getMatriz(), close[i].getMatriz()) == (tamano*tamano) && close[i].getNoEliminado()){
+    for (int i = 0; i < listaClose.size(); i++) {
+        if (calculaIguales(tablero.getMatriz(), listaClose.get(i).getMatriz()) == (tamano*tamano) && listaClose.get(i).isNoEliminado()){
             bandera = i;
             return bandera;
         }
@@ -201,8 +273,8 @@ public static int indexClose(Tablero tablero){
 public static boolean estaOpen(int[][] matriz){
     boolean bandera = false;
     
-    for (int i = 0; i < open.length; i++) {
-        if (calculaIguales (matriz, open[i].getMatriz()) == (tamano*tamano) && open[i].getNoEliminado())
+    for (int i = 0; i < listaOpen.size(); i++) {
+        if (calculaIguales (matriz,  listaOpen.get(i).getMatriz()) == (tamano*tamano) &&  listaOpen.get(i).isNoEliminado())
             bandera = true;
     }
     return bandera;
@@ -210,8 +282,8 @@ public static boolean estaOpen(int[][] matriz){
 public static boolean estaClose(int[][] matriz){
     boolean bandera = false;
     
-    for (int i = 0; i < close.length; i++) {
-        if (calculaIguales (matriz, close[i].getMatriz()) == (tamano*tamano) && close[i].getNoEliminado())
+    for (int i = 0; i < listaClose.size(); i++) {
+        if (calculaIguales (matriz, listaClose.get(i).getMatriz()) == (tamano*tamano) && listaClose.get(i).isNoEliminado())
             bandera = true;
     }
     return bandera;
@@ -225,6 +297,16 @@ public static int calculaIguales(int[][]matriz, int[][] matrizAComparar){
         }
     }
     return posIguales;
+}
+public static boolean sonIguales(int[][]matriz, int[][] matrizAComparar){
+    int posIguales=0;
+    for (int i = 0; i < tamano; i++) {
+        for (int j = 0; j < tamano; j++) {
+            if (matriz [i][j] == matrizAComparar[i][j])
+				posIguales++;
+        }
+    }
+    return posIguales == maxCalculaIguales;
 }
 
 public static boolean revisarPesoActualVsPesoenOpen(Tablero hijo,Tablero matrizEnOpen) {
@@ -296,19 +378,7 @@ public static boolean revisarPesoActualVsPesoenOpen(Tablero hijo,Tablero matrizE
 }
 
 
-    //Falta distancia a la raiz
     
-pasosFaltantes (matriz){
-	int total = 0
-	for i=0 hasta i < tamaño  i++
-		for j=0 hasta j < tamaño  j++
-			for y=0 hasta i < tamaño  i++
-				for x=0 hasta j < tamaño  j++
-					if (matriz [i][j] == tableroObjetivo[y][x])
-						total+= (abs(y-i) + abs (x-j))
-						x=3, y=3
-	return total
-}
 */
 
     public static void imprimeMatriz(int[][] matriz){

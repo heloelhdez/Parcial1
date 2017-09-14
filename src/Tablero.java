@@ -1,4 +1,7 @@
-class Tablero {
+
+import java.util.Comparator;
+
+class Tablero implements Comparable<Tablero>{
     
     private static int[][] matriz;
     private static int ubicacionPadre;
@@ -146,5 +149,20 @@ class Tablero {
         peso = aPeso;
     }
     
-   
+   /*
+    **  Implement the natural order for this class
+    */
+    @Override
+    public int compareTo(Tablero o2) {
+                if (getPeso()-o2.getPeso()<0) {
+                    return -1;
+                }
+                if (getPeso()-o2.getPeso()>0) {
+                    return 1;
+                }
+                if (getPeso()-o2.getPeso()==0) {
+                    return 0;
+                }
+                return 0;
+            }
 }
