@@ -110,7 +110,7 @@ public class Parcial1 {
             while(!listaOpen.isEmpty()){
                 
                     x = listaOpen.get(listaOpen.size()-1);
-                    if (sonIguales(x.getMatriz(), tableroObjetivo)) {
+                    if (calculaIguales(x.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
                         System.out.println("Entre son iguales");
                         pathTo(x);
                     }
