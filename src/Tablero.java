@@ -1,17 +1,18 @@
 class Tablero {
     
-    static int[][] matriz;
-    static int ubicacionPadre;
-    static int distanciaRaiz;
-    static int tamano;
-    static int posXVacio;
-    static int posYVacio;
-    static int posicionClose;
-    static boolean noEliminado = false;
+    private static int[][] matriz;
+    private static int ubicacionPadre;
+    private static int distanciaRaiz;
+    private static int posXVacio;
+    private static int posYVacio;
+    private static int posicionClose;
+    private static int posicionOpen;
+    private static boolean noEliminado = false;
+    private static double peso;
     
     //Debe tener una matriz, el peso, ubicacion del nodo padre, distancia a la raiz, poscicion x y y de vacio 
 
-    public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posXVacio,int posYVacio) {
+    public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posXVacio,int posYVacio ) {
         this.matriz=matriz;
         this.ubicacionPadre=ubicacionPadre;
         this.distanciaRaiz=distanciaRaiz;
@@ -19,94 +20,131 @@ class Tablero {
         this.posYVacio=posYVacio;
     }
 
-    public static void setPosicionClose(int posicionClose) {
-        Tablero.posicionClose = posicionClose;
-    }
-
-    public static void setNoEliminado(boolean eliminado) {
-        Tablero.noEliminado = eliminado;
-    }
-    
-    public static int getPosicionClose() {
-        return posicionClose;
-    }
-    
-    public static void setDistanciaRaiz(int distanciaRaiz) {
-        Tablero.distanciaRaiz = distanciaRaiz;
-    }
-
-    public static void setMatriz(int[][] matriz) {
-        Tablero.matriz = matriz;
-    }
-
-    public static void setPosXVacio(int posXVacio) {
-        Tablero.posXVacio = posXVacio;
-    }
-
-    public static void setPosYVacio(int posYVacio) {
-        Tablero.posYVacio = posYVacio;
-    }
-
-    public static void setTamano(int tamano) {
-        Tablero.tamano = tamano;
-    }
-
-    public static void setUbicacionPadre(int ubicacionPadre) {
-        Tablero.ubicacionPadre = ubicacionPadre;
-    }
-
-    public static int getDistanciaRaiz() {
-        return distanciaRaiz;
-    }
-
+    /**
+     * @return the matriz
+     */
     public static int[][] getMatriz() {
         return matriz;
     }
 
+    /**
+     * @param aMatriz the matriz to set
+     */
+    public static void setMatriz(int[][] aMatriz) {
+        matriz = aMatriz;
+    }
+
+    /**
+     * @return the ubicacionPadre
+     */
+    public static int getUbicacionPadre() {
+        return ubicacionPadre;
+    }
+
+    /**
+     * @param aUbicacionPadre the ubicacionPadre to set
+     */
+    public static void setUbicacionPadre(int aUbicacionPadre) {
+        ubicacionPadre = aUbicacionPadre;
+    }
+
+    /**
+     * @return the distanciaRaiz
+     */
+    public static int getDistanciaRaiz() {
+        return distanciaRaiz;
+    }
+
+    /**
+     * @param aDistanciaRaiz the distanciaRaiz to set
+     */
+    public static void setDistanciaRaiz(int aDistanciaRaiz) {
+        distanciaRaiz = aDistanciaRaiz;
+    }
+
+    /**
+     * @return the posXVacio
+     */
     public static int getPosXVacio() {
         return posXVacio;
     }
 
+    /**
+     * @param aPosXVacio the posXVacio to set
+     */
+    public static void setPosXVacio(int aPosXVacio) {
+        posXVacio = aPosXVacio;
+    }
+
+    /**
+     * @return the posYVacio
+     */
     public static int getPosYVacio() {
         return posYVacio;
     }
 
-    public static int getTamano() {
-        return tamano;
+    /**
+     * @param aPosYVacio the posYVacio to set
+     */
+    public static void setPosYVacio(int aPosYVacio) {
+        posYVacio = aPosYVacio;
     }
 
-    public static int getUbicacionPadre() {
-        return ubicacionPadre;
+    /**
+     * @return the posicionClose
+     */
+    public static int getPosicionClose() {
+        return posicionClose;
     }
-    public static boolean getNoEliminado(){
+
+    /**
+     * @param aPosicionClose the posicionClose to set
+     */
+    public static void setPosicionClose(int aPosicionClose) {
+        posicionClose = aPosicionClose;
+    }
+
+    /**
+     * @return the posicionOpen
+     */
+    public static int getPosicionOpen() {
+        return posicionOpen;
+    }
+
+    /**
+     * @param aPosicionOpen the posicionOpen to set
+     */
+    public static void setPosicionOpen(int aPosicionOpen) {
+        posicionOpen = aPosicionOpen;
+    }
+
+    /**
+     * @return the noEliminado
+     */
+    public static boolean isNoEliminado() {
         return noEliminado;
     }
 
-    public static int peso(){
-            int peso = 0;
-            for (int fila=0; fila<tamano; fila++) {
-                    for (int column=0; column<tamano;column++) {
-                            try{
-                                if (fila < tamano-1 && column < tamano-1) {
-                                        if (matriz[fila][column] == matriz[fila][column+1])
-                                                peso++;
-                                        if (matriz[fila][column] == matriz[fila+1][column])
-                                                peso++;
-                                }
-                                if (fila == tamano-1) {
-                                        if (matriz[fila][column] == matriz[fila][column+1])
-                                                peso++;
-                                }
-                                if (column == tamano-1) {
-                                        if (matriz[fila][column] == matriz[fila+1][column])
-                                                peso++;
-                                }	
-                            }
-                            catch(ArrayIndexOutOfBoundsException e){
-                                    continue;
-                            }
-                    }
-            }
-            return peso;
+    /**
+     * @param aNoEliminado the noEliminado to set
+     */
+    public static void setNoEliminado(boolean aNoEliminado) {
+        noEliminado = aNoEliminado;
     }
+
+    /**
+     * @return the peso
+     */
+    public static double getPeso() {
+        return peso;
+    }
+
+    /**
+     * @param aPeso the peso to set
+     */
+    public static void setPeso(double aPeso) {
+        peso = aPeso;
+    }
+    
+   
 }

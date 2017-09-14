@@ -29,6 +29,7 @@ public class Parcial1 {
     static int filaCero;
     static Tablero[] open;
     static Tablero[] close;
+    static Tablero[] tableroInicial;
     static int columnaCero;
     
     static int iteracion=0, posVacioX, posVacioY;
@@ -82,6 +83,7 @@ public class Parcial1 {
         }
            inicial = parseaMatriz(inicialS);
            tableroObjetivo = parseaMatriz(tableroObjetivoS);
+           tableroInicial = new Tablero(inicial, )
         //imprimeMatriz(inicial);
         //imprimeMatriz(tableroObjetivo);
            System.out.println(filaCero);
@@ -120,11 +122,12 @@ public class Parcial1 {
         return tablero;
     }
     
-    public static void generaHijoDerecha(Tablero papa,int  vacioX,int vacioY,int distaARaiz){
+    public static void generaHijoDerecha(Tablero papa){
 	try {
-                Tablero hijo = new Tablero();
-                int[][] hijo = swap(tablero, vacioX, vacioY,vacioX+1,vacioY);
-                
+                Tablero hijo = papa;
+                int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()+1,papa.getPosYVacio());
+                papa.setMatriz(hijoMatriz);
+                papa.setDistanciaRaiz(papa.getDistanciaRaiz()+1);
                 
 		if (indexOpen(hijo)>=0){
                     
@@ -146,12 +149,12 @@ public class Parcial1 {
             }
         }
     //Recuerda que no se van a eliminar sino que el objeto tendra un tributo que va a decir si esta eliminado
- public static double calculaPeso(int[][] matriz,int distaARaiz){
+ public static double calculaPeso(Tablero tablero){
 	//Hay que dividir entre el maximo de cada uno para que quede de 0-1
 	double peso = 0;
-	peso+= calculaIguales(matriz, tableroObjetivo)/maxCalculaIguales;
-	peso += pasosFaltantes(matriz)/maxPasosFaltantes;
-	peso+= distaARaiz/maxDistanciaRaiz;
+	peso+= calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales;
+	peso += pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes;
+	peso+= tablero.getDistanciaRaiz()/maxDistanciaRaiz;
 	return peso;
 }
 
@@ -173,23 +176,22 @@ public static int pasosFaltantes(int[][] matriz){
  return total;
 }
 
-
-public static int indexOpen(int[][] matriz){
+public static int indexOpen(Tablero tablero){
     int bandera = -1;
     
     for (int i = 0; i < open.length; i++) {
-        if (calculaIguales(matriz, open[i].getMatriz()) == (tamano*tamano) && open[i].getNoEliminado()){
+        if (calculaIguales(tablero.getMatriz(), open[i].getMatriz()) == (tamano*tamano) && open[i].getNoEliminado()){
             bandera = i;
             return bandera;
         }
     }
     return bandera;
 }
-public static int indexClose(int[][] matriz){
+public static int indexClose(Tablero tablero){
     int bandera = -1;
 
     for (int i = 0; i < close.length; i++) {
-        if (calculaIguales(matriz, close[i].getMatriz()) == (tamano*tamano) && close[i].getNoEliminado()){
+        if (calculaIguales(tablero.getMatriz(), close[i].getMatriz()) == (tamano*tamano) && close[i].getNoEliminado()){
             bandera = i;
             return bandera;
         }
@@ -225,12 +227,12 @@ public static int calculaIguales(int[][]matriz, int[][] matrizAComparar){
     return posIguales;
 }
 
-public static boolean revisarPesoActualVsPesoenOpen(int[][] hijo,int[][] matrizEnOpen,int distaARaiz) {
+public static boolean revisarPesoActualVsPesoenOpen(Tablero hijo,Tablero matrizEnOpen) {
 	boolean bandera = false;
         //Recuerda que distaARaiz es mas uno porque es el hijo
         //solo ver que esta en open y validar que la distancia a la raiz sea menor a la otra
-	double pesoHijo = calculaPeso(hijo, distaARaiz+1);
-	double pesoOpen = calculaPeso(matrizEnOpen, distaARaiz);
+	double pesoHijo = calculaPeso(hijo);
+	double pesoOpen = calculaPeso(matrizEnOpen);
 	if (pesoHijo < pesoOpen)
 		bandera = true;
 	return bandera;
