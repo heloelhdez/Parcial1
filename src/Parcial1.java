@@ -40,7 +40,7 @@ public class Parcial1 {
     static int maxCalculaIguales;
     static int maxPasosFaltantes;
     static int maxDistanciaRaiz;
-    
+    static boolean solucion = false;
      /**
      * This will return the factorial of the given number n.
      * @param n the number to getFromOrigin the factorial for
@@ -65,7 +65,7 @@ public class Parcial1 {
         String line;
         String cvsSplitBy = ",";
         
-       tamano = Integer.parseInt(in.readLine());
+        tamano = Integer.parseInt(in.readLine());
         maxCalculaIguales = tamano * tamano;
         maxPasosFaltantes = (int)(Math.pow(tamano,3)+tamano);
         maxDistanciaRaiz = (int)(factorial((double)Math.pow(tamano,2)-tamano)/factorial((double)(tamano)));
@@ -106,16 +106,17 @@ public class Parcial1 {
             listaOpen.add(tableroInicial);
             
             Tablero x;
-            
-            while(!listaOpen.isEmpty()){
+            while(!listaOpen.isEmpty() && solucion == false ){
                 
                     x = listaOpen.get(listaOpen.size()-1);
+                    imprimeMatriz(x.getMatriz());
                     if (calculaIguales(x.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
                         System.out.println("Entre son iguales");
                         pathTo(x);
+                        solucion=true;
                     }
                     else{
-                        System.out.println("Entre Else");
+                        //System.out.println("Entre Else");
                             generaHijoDerecha(x);
                             generaHijoIzquierda(x);
                             generaHijoArriba(x);
@@ -127,21 +128,27 @@ public class Parcial1 {
                 
             
             }
+            /*
+            System.out.println("Open");
+            ordenaMayorMenor(listaOpen);
+            for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
+               Tablero next = iterator.next();
+                System.out.println(next.getPeso());
+           }
+            System.out.println("Close");
+            ordenaMayorMenor(listaClose);
+            for (Iterator<Tablero> iterator = listaClose.iterator(); iterator.hasNext();) {
+               Tablero next = iterator.next();
+                System.out.println(next.getPeso());
+                }
+                //Hay que ordenar de mayor a menor de acuerdo a su peso, del objeto!!!!!!!!
 
-           //Hay que ordenar de mayor a menor de acuerdo a su peso, del objeto!!!!!!!!
-           
-           //imprimeMatriz(inicial);
-           //imprimeMatriz(tableroObjetivo);
-           //System.out.println(filaCero);
-           //System.out.println(columnaCero);
-                         
-    // Null was received, so loop was aborted.
-
-        } catch (IOException e) {
-                   System.out.println(e.getCause());
-                   System.out.println(e.getMessage());
-            // TODO: Add error handler
-        }
+                */
+             } catch (IOException e) {
+                        System.out.println(e.getCause());
+                        System.out.println(e.getMessage());
+                 // TODO: Add error handler
+             }
        
     }
    
@@ -159,6 +166,11 @@ public class Parcial1 {
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio(),papa.getPosYVacio()-1);
                 Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio()-1,papa.getPosXVacio(), 'U');
+                if (calculaIguales(hijo.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
+                        System.out.println("Entre son iguales");
+                        pathTo(hijo);
+                        solucion=true;
+                    }
                 
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
@@ -187,7 +199,11 @@ public class Parcial1 {
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio(),papa.getPosYVacio()+1);
                 Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio()+1,papa.getPosXVacio(), 'D');
-                
+                if (calculaIguales(hijo.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
+                        System.out.println("Entre son iguales");
+                        pathTo(hijo);
+                        solucion=true;
+                    }
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
 			if (revisarPesoActualVsPesoenOpen( hijo, listaOpen.get(indexOpen(hijo)))){
@@ -213,10 +229,17 @@ public class Parcial1 {
     public static void generaHijoIzquierda(Tablero papa){
         System.out.println("izquierda");
 	if (papa.getPosXVacio()-1 >= 0) {
+                
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()-1,papa.getPosYVacio());
                 Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()-1, papa.getPosYVacio(),papa.getPosXVacio()-1, 'L');
+                System.out.println(calculaIguales(hijo.getMatriz(), tableroObjetivo));
                 
+                if (calculaIguales(hijo.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
+                        System.out.println("Entre son iguales");
+                        pathTo(hijo);
+                        solucion=true;
+                    }
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
 			if (revisarPesoActualVsPesoenOpen( hijo, listaOpen.get(indexOpen(hijo)))){
@@ -246,7 +269,13 @@ public class Parcial1 {
             //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()+1,papa.getPosYVacio());
                 Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio(),papa.getPosXVacio()+1, 'R');
-                System.out.println("Entre Derecha Try");
+                
+                if (calculaIguales(hijo.getMatriz(), tableroObjetivo) == maxCalculaIguales) {
+                        System.out.println("Entre son iguales");
+                        pathTo(hijo);
+                        solucion=true;
+                    }
+                //System.out.println("Entre Derecha Try");
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
 			if (revisarPesoActualVsPesoenOpen( hijo, listaOpen.get(indexOpen(hijo)))){
@@ -273,10 +302,10 @@ public static void ordenaMayorMenor(ArrayList<Tablero> lista){
     Collections.sort(lista,  new Comparator<Tablero>() {
             @Override
             public int compare(Tablero o1, Tablero o2) {
-                if (o1.getPeso()-o2.getPeso()>0) {
+                if (o1.getPeso()-o2.getPeso()<0) {
                     return -1;
                 }
-                if (o1.getPeso()-o2.getPeso()<0) {
+                if (o1.getPeso()-o2.getPeso()>0) {
                     return 1;
                 }
                 if (o1.getPeso()-o2.getPeso()==0) {
@@ -291,8 +320,8 @@ public static void ordenaMayorMenor(ArrayList<Tablero> lista){
             //Hay que dividir entre el maximo de cada uno para que quede de 0-1 y multiplicar por un persontaje para dar mayor relevancia a un peso en especifico
             double peso = 0;
             peso += (calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales)*0.25;
-            peso += (pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes)*0.5;
-            peso += (tablero.getDistanciaRaiz()/maxDistanciaRaiz)*0.25;
+            //peso += (pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes)*0.5;
+            //peso += (tablero.getDistanciaRaiz()/maxDistanciaRaiz)*0.25;
 	return peso;
 }
 
@@ -404,67 +433,6 @@ public static boolean revisarPesoActualVsPesoenClose(Tablero tabla,Tablero matri
 		bandera = true;
 	return bandera;
 }
-    /*
-    generaHijoIzquierda(tablero, vacioX,vacioY){
-	try {
-		hijo = swap (tablero [vacioY][vacioX], tablero[vacioY][vacioX-1]
-		if (estaOpen(hijo))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				cambiarPesoenOpen
-		else if (estaClose(close))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				removeClose(hjo)
-				open.append(hijo)
-    else	
-                            calculaPeso(hijo)
-                            open.append()hijo
-    }
-    catch{
-            exception por salir del arreglo, continue
-    }
-}
-
-    generaHijoArriba(tablero, vacioX,vacioY){
-	try {
-		hijo = swap (tablero [vacioY][vacioX], tablero[vacioY-1][vacioX]
-		if (estaOpen(hijo))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				cambiarPesoenOpen
-		else if (estaClose(close))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				removeClose(hjo)
-				open.append(hijo)
-    else	
-                            calculaPeso(hijo)
-                            open.append()hijo
-    }
-    catch{
-            exception por salir del arreglo, continue
-    }
-}
-
-    generaHijoAbajo(tablero, vacioX,vacioY){
-	try {
-		hijo = swap (tablero [vacioY][vacioX], tablero[vacioY+1][vacioX]
-		if (estaOpen(hijo))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				cambiarPesoenOpen
-		else if (estaClose(close))
-			if (revisarPesoActualVsPesoenOpen(hijo))
-				removeClose(hjo)
-				open.append(hijo)
-    else	
-                            calculaPeso(hijo)
-                            open.append()hijo
-    }
-    catch{
-            exception por salir del arreglo, continue
-    }
-}
-
-
-    
-*/
 
     public static void imprimeMatriz(int[][] matriz){
         for (int fila=0; fila<matriz.length; fila++) {
