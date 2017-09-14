@@ -4,25 +4,33 @@ import java.util.Comparator;
 class Tablero{
     
     private int[][] matriz;
-    private  int ubicacionPadre;
+    private  int ubicacionPadre;//En close
     private  int distanciaRaiz;
     private  int posXVacio;
     private  int posYVacio;
-    private  int posicionClose;
-    private  int posicionOpen;
     private  boolean noEliminado = false;
     private  double peso;
+    private char movimiento;
     
     //Debe tener una matriz, el peso, ubicacion del nodo padre, distancia a la raiz, poscicion x y y de vacio 
 
-    public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posXVacio,int posYVacio ) {
+    public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
         this.matriz=matriz;
         this.ubicacionPadre=ubicacionPadre;
         this.distanciaRaiz=distanciaRaiz;
         this.posXVacio=posXVacio;
         this.posYVacio=posYVacio;
+        this.movimiento=movimiento;
     }
 
+    public char getMovimiento() {
+        return movimiento;
+    }
+
+    public void setMovimiento(char movimiento) {
+        this.movimiento = movimiento;
+    }
+    
     /**
      * @return the matriz
      */
@@ -91,34 +99,6 @@ class Tablero{
      */
     public  void setPosYVacio(int aPosYVacio) {
         posYVacio = aPosYVacio;
-    }
-
-    /**
-     * @return the posicionClose
-     */
-    public  int getPosicionClose() {
-        return posicionClose;
-    }
-
-    /**
-     * @param aPosicionClose the posicionClose to set
-     */
-    public  void setPosicionClose(int aPosicionClose) {
-        posicionClose = aPosicionClose;
-    }
-
-    /**
-     * @return the posicionOpen
-     */
-    public  int getPosicionOpen() {
-        return posicionOpen;
-    }
-
-    /**
-     * @param aPosicionOpen the posicionOpen to set
-     */
-    public  void setPosicionOpen(int aPosicionOpen) {
-        posicionOpen = aPosicionOpen;
     }
 
     /**
