@@ -29,7 +29,7 @@ public class Parcial1 {
     static String[][] inicialS;
     static String[][] tableroObjetivoS;
     static int filaCero;
-    static ArrayList<Tablero> listaOpen = new ArrayList<>();
+    static ArrayList<Tablero> listaOpen = new ArrayList<Tablero>();
     static ArrayList<Tablero> listaClose = new ArrayList<>();
     
     static Tablero tableroInicial;
@@ -86,42 +86,42 @@ public class Parcial1 {
         }
            inicial = parseaMatriz(inicialS);
            tableroObjetivo = parseaMatriz(tableroObjetivoS);
+           
            tableroInicial = new Tablero(inicial, 0,0,columnaCero, filaCero);
            tableroInicial.setPeso(0.9);
-           listaOpen.add(tableroInicial);
+           System.out.println("inicial "+tableroInicial.getPeso());
+           listaOpen.add(0,tableroInicial);
            //imprimeMatriz(listaOpen.get(0).getMatriz());
-           Tablero t2 = tableroInicial;
+           Tablero t2 = new Tablero(inicial, 1,0,columnaCero, filaCero);
+           
            t2.setPeso(0.5);
-           listaOpen.add(t2);
-           t2.setPeso(0.3);
-           listaOpen.add(t2);
-           for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
-               Tablero next = iterator.next();
-               System.out.println(next.getPeso());
-               
-           }
+           
+           System.out.println("inicial "+tableroInicial.getPeso());
+           System.out.println("t2 "+t2.getPeso());
+           
+           listaOpen.add(1,t2);
+           Tablero t3 = new Tablero(inicial, 2,0,columnaCero, filaCero);
+           t3.setPeso(0.8);
+           
+           listaOpen.add(2,t3);
+           System.out.println("lista");
+           //System.out.println(listaOpen.get(0).peso);
+           //System.out.println(listaOpen.get(1).peso);
+           System.out.println(listaOpen.get(2).getPeso());
+           
+           System.out.println("Objetos");
+           System.out.println(tableroInicial.getPeso());
+           System.out.println(t2.getPeso());
+           System.out.println(t3.getPeso());
            System.out.println("Desordenada");
-           Collections.sort(listaOpen,  new Comparator<Tablero>() {
-            @Override
-            public int compare(Tablero o1, Tablero o2) {
-                if (o1.getPeso()-o2.getPeso()<0) {
-                    return -1;
-                }
-                if (o1.getPeso()-o2.getPeso()>0) {
-                    return 1;
-                }
-                if (o1.getPeso()-o2.getPeso()==0) {
-                    return 0;
-                }
-                return 0;
-            }
-        });
+           
            
            for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
                Tablero next = iterator.next();
                System.out.println(next.getPeso());
                
            }
+           System.out.println(listaOpen.size());
            //open.append (tableroInicial)
            //open.order()
             /*
@@ -139,7 +139,7 @@ public class Parcial1 {
                             //generaHijoAbajo(x)
                             listaClose.add(x);
                             Collections.sort(listaOpen, Collections.reverseOrder());
-                            //listaOpen.sort(cmprtr);
+                            //ordenaMayorMenor(listaOpen);
                     }
                 }
                 catch(Exception e){
@@ -220,13 +220,31 @@ public class Parcial1 {
             }
         }
     */
+    
+public static void ordenaMayorMenor(ArrayList<Tablero> lista){
+    Collections.sort(lista,  new Comparator<Tablero>() {
+            @Override
+            public int compare(Tablero o1, Tablero o2) {
+                if (o1.getPeso()-o2.getPeso()>0) {
+                    return -1;
+                }
+                if (o1.getPeso()-o2.getPeso()<0) {
+                    return 1;
+                }
+                if (o1.getPeso()-o2.getPeso()==0) {
+                    return 0;
+                }
+                return 0;
+                }
+            });
+}
     //Recuerda que no se van a eliminar sino que el objeto tendra un tributo que va a decir si esta eliminado
  public static double calculaPeso(Tablero tablero){
-	//Hay que dividir entre el maximo de cada uno para que quede de 0-1
-	double peso = 0;
-	peso += calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales;
-	peso += pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes;
-	peso += tablero.getDistanciaRaiz()/maxDistanciaRaiz;
+            //Hay que dividir entre el maximo de cada uno para que quede de 0-1 y multiplicar por un persontaje para dar mayor relevancia a un peso en especifico
+            double peso = 0;
+            peso += (calculaIguales(tablero.getMatriz(), tableroObjetivo)/maxCalculaIguales)*0.25;
+            peso += (pasosFaltantes(tablero.getMatriz())/maxPasosFaltantes)*0.5;
+            peso += (tablero.getDistanciaRaiz()/maxDistanciaRaiz)*0.5;
 	return peso;
 }
 

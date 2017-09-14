@@ -1,17 +1,17 @@
 
 import java.util.Comparator;
 
-class Tablero implements Comparable<Tablero>{
+class Tablero{
     
-    private static int[][] matriz;
-    private static int ubicacionPadre;
-    private static int distanciaRaiz;
-    private static int posXVacio;
-    private static int posYVacio;
-    private static int posicionClose;
-    private static int posicionOpen;
-    private static boolean noEliminado = false;
-    private static double peso;
+    private int[][] matriz;
+    private  int ubicacionPadre;
+    private  int distanciaRaiz;
+    private  int posXVacio;
+    private  int posYVacio;
+    private  int posicionClose;
+    private  int posicionOpen;
+    private  boolean noEliminado = false;
+    private  double peso;
     
     //Debe tener una matriz, el peso, ubicacion del nodo padre, distancia a la raiz, poscicion x y y de vacio 
 
@@ -26,143 +26,127 @@ class Tablero implements Comparable<Tablero>{
     /**
      * @return the matriz
      */
-    public static int[][] getMatriz() {
+    public  int[][] getMatriz() {
         return matriz;
     }
 
     /**
      * @param aMatriz the matriz to set
      */
-    public static void setMatriz(int[][] aMatriz) {
+    public  void setMatriz(int[][] aMatriz) {
         matriz = aMatriz;
     }
 
     /**
      * @return the ubicacionPadre
      */
-    public static int getUbicacionPadre() {
+    public  int getUbicacionPadre() {
         return ubicacionPadre;
     }
 
     /**
      * @param aUbicacionPadre the ubicacionPadre to set
      */
-    public static void setUbicacionPadre(int aUbicacionPadre) {
+    public  void setUbicacionPadre(int aUbicacionPadre) {
         ubicacionPadre = aUbicacionPadre;
     }
 
     /**
      * @return the distanciaRaiz
      */
-    public static int getDistanciaRaiz() {
+    public  int getDistanciaRaiz() {
         return distanciaRaiz;
     }
 
     /**
      * @param aDistanciaRaiz the distanciaRaiz to set
      */
-    public static void setDistanciaRaiz(int aDistanciaRaiz) {
+    public  void setDistanciaRaiz(int aDistanciaRaiz) {
         distanciaRaiz = aDistanciaRaiz;
     }
 
     /**
      * @return the posXVacio
      */
-    public static int getPosXVacio() {
+    public  int getPosXVacio() {
         return posXVacio;
     }
 
     /**
      * @param aPosXVacio the posXVacio to set
      */
-    public static void setPosXVacio(int aPosXVacio) {
+    public  void setPosXVacio(int aPosXVacio) {
         posXVacio = aPosXVacio;
     }
 
     /**
      * @return the posYVacio
      */
-    public static int getPosYVacio() {
+    public  int getPosYVacio() {
         return posYVacio;
     }
 
     /**
      * @param aPosYVacio the posYVacio to set
      */
-    public static void setPosYVacio(int aPosYVacio) {
+    public  void setPosYVacio(int aPosYVacio) {
         posYVacio = aPosYVacio;
     }
 
     /**
      * @return the posicionClose
      */
-    public static int getPosicionClose() {
+    public  int getPosicionClose() {
         return posicionClose;
     }
 
     /**
      * @param aPosicionClose the posicionClose to set
      */
-    public static void setPosicionClose(int aPosicionClose) {
+    public  void setPosicionClose(int aPosicionClose) {
         posicionClose = aPosicionClose;
     }
 
     /**
      * @return the posicionOpen
      */
-    public static int getPosicionOpen() {
+    public  int getPosicionOpen() {
         return posicionOpen;
     }
 
     /**
      * @param aPosicionOpen the posicionOpen to set
      */
-    public static void setPosicionOpen(int aPosicionOpen) {
+    public  void setPosicionOpen(int aPosicionOpen) {
         posicionOpen = aPosicionOpen;
     }
 
     /**
      * @return the noEliminado
      */
-    public static boolean isNoEliminado() {
+    public  boolean isNoEliminado() {
         return noEliminado;
     }
 
     /**
      * @param aNoEliminado the noEliminado to set
      */
-    public static void setNoEliminado(boolean aNoEliminado) {
+    public  void setNoEliminado(boolean aNoEliminado) {
         noEliminado = aNoEliminado;
     }
 
     /**
      * @return the peso
      */
-    public static double getPeso() {
+    public  double getPeso() {
         return peso;
     }
 
     /**
      * @param aPeso the peso to set
      */
-    public static void setPeso(double aPeso) {
+    public  void setPeso(double aPeso) {
         peso = aPeso;
     }
     
-   /*
-    **  Implement the natural order for this class
-    */
-    @Override
-    public int compareTo(Tablero o2) {
-                if (getPeso()-o2.getPeso()<0) {
-                    return -1;
-                }
-                if (getPeso()-o2.getPeso()>0) {
-                    return 1;
-                }
-                if (getPeso()-o2.getPeso()==0) {
-                    return 0;
-                }
-                return 0;
-            }
 }
