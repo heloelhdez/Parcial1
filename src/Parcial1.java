@@ -103,24 +103,19 @@ public class Parcial1 {
            tableroObjetivo = parseaMatriz(tableroObjetivoS);
            
            tableroInicial = new Tablero(inicial, 0,0,columnaCero, filaCero,' ');
-           
-           /*
-           for (Iterator<Tablero> iterator = listaOpen.iterator(); iterator.hasNext();) {
-               Tablero next = iterator.next();
-               System.out.println(next.getPosXVacio());
-               
-           }
-            */
+            listaOpen.add(tableroInicial);
             
-           
             Tablero x;
+            
             while(!listaOpen.isEmpty()){
-                try{
+                
                     x = listaOpen.get(listaOpen.size()-1);
                     if (sonIguales(x.getMatriz(), tableroObjetivo)) {
+                        System.out.println("Entre son iguales");
                         pathTo(x);
                     }
                     else{
+                        System.out.println("Entre Else");
                             generaHijoDerecha(x);
                             generaHijoIzquierda(x);
                             generaHijoArriba(x);
@@ -129,10 +124,7 @@ public class Parcial1 {
                             Collections.sort(listaOpen, Collections.reverseOrder());
                             //ordenaMayorMenor(listaOpen);
                     }
-                }
-                catch(Exception e){
-                    e.getStackTrace();
-                }
+                
             
             }
 
@@ -152,22 +144,7 @@ public class Parcial1 {
         }
        
     }
-    /*
-    open.append (tableroInicial)
-    open.order()
-    while open != vacio
-            X = open.pop()
-            if  X== objetivo
-                    pathToX(x)
-            else 
-                    X es objeto.matriz
-                    generaHijoDerecha(X, posVacioX, posVacioY)
-                    generaHijoIzquierda(X, posVacioX, posVacioY)
-                    generaHijoArriba(X, posVacioX, posVacioY)
-                    generaHijoAbajo(X, posVacioX, posVacioY)
-                    close.append(X)
-                    open.order()
-    */
+   
     public static int[][] swap(int[][] tablero, int posXinicial, int posXfinal, int posYinicial, int posYfinal){
         int tmp;
         tmp = tablero[posYinicial][posXinicial];
@@ -177,10 +154,11 @@ public class Parcial1 {
     }
     
     public static void generaHijoArriba(Tablero papa){
-	try{
+        System.out.println("arriba");
+	if (papa.getPosYVacio()-1 < 0) {
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
-                int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio(),papa.getPosYVacio()+1);
-                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio(),papa.getPosXVacio()-1, 'U');
+                int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio(),papa.getPosYVacio()-1);
+                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio()-1,papa.getPosXVacio(), 'U');
                 
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
@@ -202,15 +180,13 @@ public class Parcial1 {
                         listaOpen.add(hijo);
             }
         }
-        catch(Exception e){
-                    e.toString();
-            }
     }
     public static void generaHijoAbajo(Tablero papa){
-	try{
+        System.out.println("abajo");
+	if (papa.getPosYVacio()+1 < tamano) {
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio(),papa.getPosYVacio()+1);
-                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio(),papa.getPosXVacio()+1, 'D');
+                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio()+1,papa.getPosXVacio(), 'D');
                 
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
@@ -232,16 +208,14 @@ public class Parcial1 {
                         listaOpen.add(hijo);
             }
         }
-        catch(Exception e){
-                    e.toString();
-            }
     }
     
     public static void generaHijoIzquierda(Tablero papa){
-	try{
+        System.out.println("izquierda");
+	if (papa.getPosXVacio()-1 < 0) {
                 //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
-                int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()+1,papa.getPosYVacio());
-                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()-1, papa.getPosYVacio(),papa.getPosXVacio()+1, 'L');
+                int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()-1,papa.getPosYVacio());
+                Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()-1, papa.getPosYVacio(),papa.getPosXVacio()-1, 'L');
                 
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
@@ -263,18 +237,16 @@ public class Parcial1 {
                         listaOpen.add(hijo);
             }
         }
-        catch(Exception e){
-                    e.toString();
-            }
     }
     
     
     public static void generaHijoDerecha(Tablero papa){
-	try{
-                //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
+        System.out.println("derecha");
+                if (papa.getPosXVacio()+1 < tamano) {
+            //public Tablero(int[][] matriz,int ubicacionPadre, int distanciaRaiz,int posYVacio,int posXVacio, char movimiento) {
                 int[][] hijoMatriz = swap(papa.getMatriz(), papa.getPosXVacio(), papa.getPosYVacio(), papa.getPosXVacio()+1,papa.getPosYVacio());
                 Tablero hijo = new Tablero(hijoMatriz, listaClose.size(),papa.getDistanciaRaiz()+1, papa.getPosYVacio(),papa.getPosXVacio()+1, 'R');
-                
+                System.out.println("Entre Derecha Try");
                 if (indexOpen(hijo)>=0){
                     //Aqui vamos
 			if (revisarPesoActualVsPesoenOpen( hijo, listaOpen.get(indexOpen(hijo)))){
@@ -295,9 +267,6 @@ public class Parcial1 {
                         listaOpen.add(hijo);
             }
         }
-        catch(Exception e){
-                    e.toString();
-            }
     }
     
 public static void ordenaMayorMenor(ArrayList<Tablero> lista){
